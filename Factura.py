@@ -128,7 +128,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         lblTotalTexto.setGeometry(QRect(40 ,410 ,151 ,31))
         lblTotalTexto.setStyleSheet("background-color: rgb(255 ,255 ,255);")
         lblTotalTexto.setAlignment(Qt.AlignCenter)
-        lblTotalTexto.setText("Total:")
+        lblTotalTexto.setText("Cambio:")
 
         # Campo para el total (QLabel)
         self.txtTotal = QLabel(self.centralwidget)  
