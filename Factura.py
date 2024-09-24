@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QPushButton, QCom
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QFont
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.mime.multipart import MIMEMultipart 
 
 # Cargar variables de entorno
 load_dotenv()
