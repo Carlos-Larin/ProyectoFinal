@@ -4,6 +4,8 @@ import os
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QPushButton, QComboBox, QLineEdit, QWidget
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QFont
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Cargar variables de entorno
 load_dotenv()
@@ -50,6 +52,12 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         self.lblDequees.setStyleSheet("background-color: rgb(255, 255, 255); font: 75 8pt 'MS Sans Serif';")
         self.lblDequees.setText("De qué es la Pupusa")
 
+        # Campo para la cantidad de pupusas
+        self.txtCantidadPupusas = QLineEdit(self.centralwidget)
+        self.txtCantidadPupusas.setGeometry(QRect(200, 140, 50, 31))
+        self.txtCantidadPupusas.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.txtCantidadPupusas.setPlaceholderText("Cantidad")
+
         # ComboBox para elegir bebida
         self.tdBebida = QComboBox(self.centralwidget)
         self.tdBebida.setGeometry(QRect(180, 180, 151, 31))
@@ -61,6 +69,18 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         self.lblBebida.setGeometry(QRect(40, 180, 131, 31))
         self.lblBebida.setStyleSheet("background-color: rgb(255, 255, 255); font: 75 8pt 'MS Sans Serif';")
         self.lblBebida.setText("Bebida")
+
+        # Campo para cantidad de bebida
+        self.txtCantidadBebidas = QLineEdit(self.centralwidget)
+        self.txtCantidadBebidas.setGeometry(QRect(200, 210, 50, 31))
+        self.txtCantidadBebidas.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.txtCantidadBebidas.setPlaceholderText("Cantidad")
+
+        # Label para cantidad de bebida
+        self.lblCantidadBebida = QLabel(self.centralwidget)
+        self.lblCantidadBebida.setGeometry(QRect(40, 210, 151, 31))
+        self.lblCantidadBebida.setStyleSheet("background-color: rgb(255, 255, 255); font: 75 8pt 'MS Sans Serif';")
+        self.lblCantidadBebida.setText("Cantidad Bebida")
 
         # Campo para dirección del cliente
         self.txtDireccionC = QLineEdit(self.centralwidget)
@@ -113,7 +133,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         # Campo para el total (QLabel)
         self.txtTotal = QLabel(self.centralwidget)  
         self.txtTotal.setGeometry(QRect(200 ,410 ,231 ,31))  
-        self.txtTotal.setStyleSheet("background-color: rgb(255, 170, 0);")  
+        self.txtTotal.setStyleSheet("background-color: rgb(255,170,0);")  
         self.txtTotal.setText("$0.00")  
         self.txtTotal.setAlignment(Qt.AlignCenter)  
 
@@ -132,17 +152,19 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         grax.setAlignment(Qt.AlignCenter)
         grax.setText("Gracias por Preferirnos")
 
-        
         # Conectar señales a métodos
         self.tdPupusa.currentIndexChanged.connect(self.calcular_total)
         self.tdBebida.currentIndexChanged.connect(self.calcular_total)
         self.pagaCon.textChanged.connect(self.calcular_total)
+        self.txtCantidadPupusas.textChanged.connect(self.calcular_total)  # Conectar cantidad de pupusas
+        self.txtCantidadBebidas.textChanged.connect(self.calcular_total)  # Conectar cantidad de bebidas
 
-        # Set central widget
         self.setCentralWidget(self.centralwidget)
-# Me he quedado aqui, nota mental crear la funcion para calcular
+        self.setWindowTitle("Pupusería Juan Pérez")
+
     def calcular_total(self):
-        """Calcula el total basado en las selecciones y actualiza el label de cuenta."""
+        """Calcula el total de la cuenta."""
+        # Precios de pupusas y bebidas
         total_pupusa = {
             "Frijol $0.35": 0.35,
             "Queso $0.35": 0.35,
@@ -152,7 +174,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
             "Carne $0.40": 0.40,
             "Loca $0.65": 0.65,
         }
-        
+
         total_bebida = {
             "Nada $0.00": 0.00,
             "Bolsa con agua $0.25": 0.25,
@@ -165,8 +187,20 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         precio_pupusa = total_pupusa[self.tdPupusa.currentText()]
         precio_bebida = total_bebida[self.tdBebida.currentText()]
 
+        # Obtener la cantidad de pupusas
+        try:
+            cantidad_pupusas = int(self.txtCantidadPupusas.text()) if self.txtCantidadPupusas.text() else 0
+        except ValueError:
+            cantidad_pupusas = 0  # En caso de que la entrada no sea un número válido
+
+        # Obtener la cantidad de bebidas
+        try:
+            cantidad_bebidas = int(self.txtCantidadBebidas.text()) if self.txtCantidadBebidas.text() else 0
+        except ValueError:
+            cantidad_bebidas = 0  # En caso de que la entrada no sea un número válido
+
         # Calcular el total de la cuenta
-        cuenta_total = precio_pupusa + precio_bebida
+        cuenta_total = (precio_pupusa * cantidad_pupusas) + (precio_bebida * cantidad_bebidas)
         self.cuenta.setText(f"${cuenta_total:.2f}")  # Mostrar en el label de cuenta
         
         # Calcular el vuelto si se ha ingresado un valor en "Paga con"
@@ -176,24 +210,35 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
             self.txtTotal.setText(f"${vuelto:.2f}")  # Mostrar el vuelto en el total
         else:
             self.txtTotal.setText("$0.00")  # Si no hay valor en "Paga con", poner $0.00
-#recordar meter o crear el archivo .env
-    def enviar_recibo(self):
-        """Envía un recibo por correo electrónico utilizando smtplib."""
-        cliente = self.txtDireccionC.text()
-        mensaje = f"""\
-        Subject: Recibo de compra
-        Gracias por su compra!
-        El total de su cuenta es: {self.cuenta.text()}
-        Su vuelto es: {self.txtTotal.text()}"""
 
-        # Conectar al servidor y enviar correo
-        with smtplib.SMTP(serv, puerto) as smtp:
-            smtp.starttls()
-            smtp.login(remit, contra)
-            smtp.sendmail(remit, cliente, mensaje)
-#revisar spam y averiguar porque cae como spam, ¿abre ingresado mal algun dato?
+    def enviar_recibo(self):
+        """Envía el recibo por correo electrónico."""
+        # Obtener la dirección de correo y el total
+        direccion_cliente = self.txtDireccionC.text()
+        total = self.cuenta.text()
+
+        # Crear el mensaje
+        mensaje = MIMEMultipart()
+        mensaje['From'] = remit
+        mensaje['To'] = direccion_cliente
+        mensaje['Subject'] = "Recibo de compra"
+
+        # Cuerpo del mensaje
+        cuerpo = f"Gracias por su compra.\nSu total es: {total}\n¡Vuelva pronto!"
+        mensaje.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
+
+        try:
+            with smtplib.SMTP(serv, puerto) as server:
+                server.starttls()
+                server.login(remit, contra)
+                server.sendmail(remit, direccion_cliente, mensaje.as_string())
+            print("Recibo enviado correctamente.")
+        except Exception as e:
+            print(f"Ocurrió un error al enviar el recibo: {e}")
+
 if __name__ == "__main__":
-    app = QApplication([])
+    import sys
+    app = QApplication(sys.argv)
     window = Ui_PupuseriaJuanPerez()
     window.show()
-    app.exec_()
+    sys.exit(app.exec_())
