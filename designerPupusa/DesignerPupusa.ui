@@ -217,19 +217,6 @@ border-top-color: rgb(255, 0, 0);</string>
      <string notr="true">background-color: rgb(170, 255, 127);</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="cuenta">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>310</y>
-      <width>231</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 170, 255);</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="pagaCon">
     <property name="geometry">
      <rect>
@@ -396,6 +383,22 @@ border-color: rgb(255, 0, 0);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">image: url(:/imagenes.qrc/pupusas.jpg);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="cuenta">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>310</y>
+      <width>231</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string/>
