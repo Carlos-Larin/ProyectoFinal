@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QPushButton, QCom
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QFont
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart 
+from email.mime.multipart import MIMEMultipart
+
 from PIL import Image #luego agregar el logo 
 
 
@@ -240,7 +241,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
 
 if __name__ == "__main__":
     import sys
-    app = QApplication(sys.argv)
-    window = Ui_PupuseriaJuanPerez()
-    window.show()
+    app = QApplication([])
+    ventana_factura = Ui_PupuseriaJuanPerez()
+    ventana_factura.show()
     sys.exit(app.exec_())
