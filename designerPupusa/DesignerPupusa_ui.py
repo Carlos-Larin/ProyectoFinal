@@ -166,4 +166,4 @@ class Ui_PupuseriaJuanPerez(object):
         self.lblPagaCon.setText(_translate("PupuseriaJuanPerez", "Paga con: "))
         self.lblTota.setText(_translate("PupuseriaJuanPerez", "Total: "))
         self.Grax.setText(_translate("PupuseriaJuanPerez", "Gracias por Preferirnos"))
-import imagenes_rc
+

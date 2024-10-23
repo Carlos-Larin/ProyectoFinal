@@ -7,6 +7,9 @@ from PyQt5.QtGui import QFont
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from PIL import Image #luego agregar el logo 
+
+
 # Cargar variables de entorno
 load_dotenv()
 
@@ -23,7 +26,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
     def setupUi(self):
         self.setObjectName("PupuseriaJuanPerez")
         self.resize(466, 610)
-        self.setStyleSheet("background-color: rgb(10, 10, 10);")
+        self.setStyleSheet("background-color: rgb(234, 212, 149 );")
         self.centralwidget = QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -37,7 +40,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
         self.lblEmpresa.setFont(font)
         self.lblEmpresa.setStyleSheet("background-color: rgb(255, 170, 0); font: 63 16pt 'Yu Gothic UI Semibold';")
         self.lblEmpresa.setAlignment(Qt.AlignCenter)
-        self.lblEmpresa.setText("Pupusería Juan Pérez")
+        self.lblEmpresa.setText("PupasSV")
 
         # ComboBox para elegir pupusa
         self.tdPupusa = QComboBox(self.centralwidget)
@@ -238,7 +241,7 @@ class Ui_PupuseriaJuanPerez(QMainWindow):
 
 if __name__ == "__main__":
     import sys
-    app = QApplication(sys.argv)
-    window = Ui_PupuseriaJuanPerez()
-    window.show()
+    app = QApplication([])
+    ventana_factura = Ui_PupuseriaJuanPerez()
+    ventana_factura.show()
     sys.exit(app.exec_())
