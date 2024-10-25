@@ -29,7 +29,7 @@ class ventanaLogin(QMainWindow):
         self.ventana_factura.show()
         self.close()
         
-
+#credenciales
     def verificaCredenciales(self, usuario, contra):
         return usuario == "juan" and contra == "pupas"
 
